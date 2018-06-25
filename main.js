@@ -9,6 +9,7 @@ var images = {
   bg:"./images/pixil-frame-1.png",
   skater1:"./images/Sprite1.png",
   skater2:"./images/Sprite2.png",
+  skater3:"./images/Sprite3.png",
 
 }
 
@@ -52,7 +53,7 @@ class Skater {
   jump(){
         this.y -= 50;
         if(this.isJumping) return;
-        this.isJumping = true;
+        this.isJumping = true;           
             this.image = new Image();
             this.image.src = images.skater2;
             this.image.onload = function(){
@@ -66,7 +67,7 @@ class Skater {
           this.image.onload = function(){
             this.draw();
         }.bind(this);
-  }.bind(this), 300);
+  }.bind(this), 500);
   }
 
   draw(){
@@ -97,7 +98,7 @@ function update(){
 
 function start(){
   if(interval) return;
-  interval = setInterval(update, 1000/60);
+  interval = setInterval(update, 100/60);
 }
 //aux functions
 addEventListener('keydown', function(e){
