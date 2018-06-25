@@ -1,0 +1,13 @@
+#canvas {
+  border:2px solid black;
+  margin-left:370px;
+}
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One');
+
+h1 {
+  font-family: 'Fjalla One', sans-serif;
+  display:flex;
+  justify-content: center;
+
+}
+
