@@ -12,8 +12,8 @@ var images = {
   skater3:"./images/Sprite3.png",
   doggy1:"./images/doggy3.png",
   doggy2:"./images/Doggy2.png",
-
 }
+var dogs = [];
 
 //class
 class Board {
@@ -38,7 +38,7 @@ class Board {
 }
 
 class Doggy {
-  constructor(x=450){
+  constructor(x=510){
     this.x = x;
     this.y = 230;
     this.width = 60;
@@ -117,6 +117,8 @@ function update(){
   backg.draw();
   skater.draw();
   dog.draw();
+  generateDogs();
+  drawDogs();
   
 }
 
@@ -152,6 +154,20 @@ document.getElementById("btn-1").addEventListener("click", function(e){
 document.getElementById("btn-2").addEventListener("click", function(e){
     pauseButton();
 })
+
+function generateDogs(){
+  if(!(frames%500===0) ) return;
+  console.log("dog generated")
+  var dawg = new Doggy();
+  dogs.push(dawg);
+}
+
+function drawDogs(){
+  dogs.forEach(function(dogz){
+    dogz.draw();
+    
+});  
+}
 
 //listeners
 
