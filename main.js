@@ -10,7 +10,8 @@ var images = {
   skater1:"./images/Sprite1.png",
   skater2:"./images/Sprite2.png",
   skater3:"./images/Sprite3.png",
-  doggy1:"./images/Doggy1.png",
+  doggy1:"./images/doggy3.png",
+  doggy2:"./images/Doggy2.png",
 
 }
 
@@ -39,19 +40,27 @@ class Board {
 class Doggy {
   constructor(x=450){
     this.x = x;
-    this.y = 220;
-    this.width = 50;
+    this.y = 230;
+    this.width = 60;
     this.height = 50;
-    this.image = new Image();
-    this.image.src = images.doggy1;
-    this.image.onload = function(){
-      this.draw();
-    }.bind(this);
+    this.image1 = new Image();
+    this.image1.src = images.doggy1;
+    this.image2 = new Image();
+    this.image2.src = images.doggy2;
+    // this.image.onload = function(){
+    //   this.draw();
+    // }.bind(this);
   }
   draw(){
-    this.x--;
-    ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+    this.x-=2;
+    var img = this.which ? this.image1:this.image2;
+    ctx.drawImage(img,this.x,this.y,this.width,this.height);
+    if(frames%20===0) this.toggleWhich();
+  
+  this.toggleWhich = function(){
+    this.which = !this.which;
   }
+}
 }
 
 class Skater {
@@ -114,7 +123,7 @@ function update(){
 function start(){
   console.log("puchado");
   if(interval) return;
-  interval = setInterval(update, 100/60);
+  interval = setInterval(update, 500/60);
   // console.log(player);
 
 }
