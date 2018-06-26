@@ -29,6 +29,12 @@ class Board {
     }.bind(this);
 
   }
+  gameOver(){
+    ctx.font = "100px Arial";
+    ctx.fillText("GAME OVER",20,100);
+    ctx.fillStyle("lightblue");
+
+  }
   draw(){
     this.x--;
     if(this.x === -this.width) this.x = 0;
@@ -38,11 +44,11 @@ class Board {
 }
 
 class Doggy {
-  constructor(x=510){
-    this.x = x;
-    this.y = 230;
-    this.width = 60;
-    this.height = 50;
+  constructor(){
+    this.x = canvas.width;
+    this.y = 390;
+    this.width = 70;
+    this.height = 60;
     this.image1 = new Image();
     this.image1.src = images.doggy1;
     this.image2 = new Image();
@@ -66,7 +72,7 @@ class Doggy {
 class Skater {
   constructor(){
     this.x = 50;
-    this.y = 180;
+    this.y = 350;
     this.width = 100;
     this.height = 100;
     this.isJumping = false;
@@ -78,8 +84,16 @@ class Skater {
     }.bind(this);
   }
 
+  isTouching(item){
+    return  (this.x < item.x + item.width -30) &&
+            (this.x + this.width - 30 > item.x) &&
+            (this.y < item.y + item.height - 30) &&
+            (this.y + this.height - 30 > item.y);
+  }
+
+
   jump(){
-        this.y -= 55;
+        this.y -= 60;
         if(this.isJumping) return;
         this.isJumping = true;           
             this.image = new Image();
@@ -90,12 +104,18 @@ class Skater {
 
       setTimeout(function(){
         this.isJumping = false;
-        this.y += 55;
+        this.y += 60;
           this.image.src = images.skater1;
           this.image.onload = function(){
             this.draw();
         }.bind(this);
   }.bind(this), 500);
+  }
+  moveRight(){
+    this.x += 10;
+  }
+  moveLeft(){
+    this.x-=10;
   }
 
   draw(){
@@ -125,7 +145,7 @@ function update(){
 function start(){
   console.log("puchado");
   if(interval) return;
-  interval = setInterval(update, 500/60);
+  interval = setInterval(update, 400/60);
   // console.log(player);
 
 }
@@ -136,16 +156,39 @@ function pauseButton(){
 }
 function startUser(){
   console.log("pucheng");
-
+}
+function restart(){
+  if(interval) return;
+    dogs = [];
+    frames = 0;
+    skater.x = 50;
+    skater.y = 350;
+    start();
 
 }
-
 //aux functions
 addEventListener('keydown', function(e){
-  if (e.keyCode === 32) {
+  if (e.keyCode === 38) {
     skater.jump();
+  } else if (e.keyCode === 27) {
+    restart();
+  }else if (e.keyCode === 39) {
+    skater.moveRight();
+  }else if (e.keyCode === 37) {
+    skater.moveLeft();
+  }else if (e.keyCode === 39 && keyCode === 38){
+    skater.jumpLonger();
   }
 })
+
+
+
+// addEventListener("keydown", function(e){
+//   if(e.keyCode === 39) {
+//     skater.moveRight();
+//   }
+// })
+
 document.getElementById("btn-1").addEventListener("click", function(e){
     start();
     // var player = document.getElementsByTagName("input").innerText("");
@@ -165,8 +208,17 @@ function generateDogs(){
 function drawDogs(){
   dogs.forEach(function(dogz){
     dogz.draw();
+    if(skater.isTouching(dogz)){
+      dead();
+  }
     
 });  
+}
+
+function dead(){
+  clearInterval(interval);
+  interval = undefined;
+  backg.gameOver();
 }
 
 //listeners

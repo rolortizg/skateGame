@@ -5,7 +5,7 @@ body {
 
 #canvas {
   border:2px solid black;
-  margin-left:370px;
+  margin-left:300px;
  
 }
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
@@ -24,7 +24,7 @@ h1 {
  
   width:300px;
   margin-left:470px;
-  margin-top:100px;
+  margin-top:50px;
 }
 #btn-2 {
   
