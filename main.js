@@ -10,6 +10,7 @@ var images = {
   skater1:"./images/Sprite1.png",
   skater2:"./images/Sprite2.png",
   skater3:"./images/Sprite3.png",
+  doggy1:"./images/Doggy1.png",
 
 }
 
@@ -35,6 +36,24 @@ class Board {
   }
 }
 
+class Doggy {
+  constructor(x=450){
+    this.x = x;
+    this.y = 220;
+    this.width = 50;
+    this.height = 50;
+    this.image = new Image();
+    this.image.src = images.doggy1;
+    this.image.onload = function(){
+      this.draw();
+    }.bind(this);
+  }
+  draw(){
+    this.x--;
+    ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+  }
+}
+
 class Skater {
   constructor(){
     this.x = 50;
@@ -51,7 +70,7 @@ class Skater {
   }
 
   jump(){
-        this.y -= 50;
+        this.y -= 55;
         if(this.isJumping) return;
         this.isJumping = true;           
             this.image = new Image();
@@ -62,7 +81,7 @@ class Skater {
 
       setTimeout(function(){
         this.isJumping = false;
-        this.y += 50;
+        this.y += 55;
           this.image.src = images.skater1;
           this.image.onload = function(){
             this.draw();
@@ -79,6 +98,7 @@ class Skater {
 //instances
 var backg = new Board();
 var skater = new Skater();
+var dog = new Doggy();
 
 //main functions
 
@@ -87,25 +107,47 @@ function update(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   backg.draw();
   skater.draw();
-  // if (skater.isJumping){
-  //   skater.jumpTimer += 1;
-  //   if (skater.jumpTimer === 60) {
-  //     skater.jump();
-  //     skater.jumpTimer === 0
-  //   }
-  // }
+  dog.draw();
+  
 }
 
 function start(){
+  console.log("puchado");
   if(interval) return;
   interval = setInterval(update, 100/60);
+  // console.log(player);
+
 }
+function pauseButton(){
+  console.log("Me puchaste");
+  clearInterval(interval);
+  
+}
+function startUser(){
+  console.log("pucheng");
+
+
+}
+
 //aux functions
 addEventListener('keydown', function(e){
   if (e.keyCode === 32) {
     skater.jump();
   }
 })
+document.getElementById("btn-1").addEventListener("click", function(e){
+    start();
+    // var player = document.getElementsByTagName("input").innerText("");
+})
+
+document.getElementById("btn-2").addEventListener("click", function(e){
+    pauseButton();
+})
 
 //listeners
-start();
+
+
+//start();
+
+
+

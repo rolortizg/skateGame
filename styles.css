@@ -1,6 +1,12 @@
+body {
+  background-image:url("https://images.pexels.com/photos/462023/pexels-photo-462023.jpeg?cs=srgb&dl=dawn-nature-sky-462023.jpg&fm=jpg");
+  
+}
+
 #canvas {
   border:2px solid black;
   margin-left:370px;
+ 
 }
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
 
@@ -11,3 +17,15 @@ h1 {
 
 }
 
+
+
+.start {
+  
+ 
+  width:300px;
+  margin-left:370px;
+  margin-top:100px;
+}
+#btn-2 {
+  
+}
