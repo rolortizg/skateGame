@@ -19,6 +19,10 @@ var player1 = "";
 var player2 = "";
 var points = 0;
 var multiplicador = false;
+var pause = false;
+
+
+
 
 //class
 class Board {
@@ -27,6 +31,7 @@ class Board {
     this.y = 0;
     this.width = canvas.width;
     this.height = canvas.height;
+    
     this.image = new Image();
     this.image.src = images.bg;
     this.image.onload = function(){
@@ -41,16 +46,20 @@ class Board {
     ctx.font = "20px Arial";
     ctx.fillText("Press ESC to restart",20,180);
     
-    ctx.strokeText("TOTAL POINTS: " + points,20,250)
+    ctx.fillStyle = "black";
+    ctx.fillText("TOTAL POINTS: " + points,20,250)
     console.log(points);
     
 
   }
+  
+  
   draw(){
     this.x--;
     if(this.x === -this.width) this.x = 0;
     ctx.drawImage(this.image, this.x,this.y,this.width,this.height);
     ctx.drawImage(this.image, this.x + this.width,this.y,this.width,this.height);
+    
   }
   drawScore(){
     ctx.font = "50px Arial";
@@ -69,6 +78,7 @@ class Board {
   }
   
   }
+  
 }
 
 class Doggy {
@@ -81,20 +91,21 @@ class Doggy {
     this.image1.src = images.doggy1;
     this.image2 = new Image();
     this.image2.src = images.doggy2;
+    this.toggleWhich = function(){
+      this.which = !this.which;
+    }
     // this.image.onload = function(){
     //   this.draw();
     // }.bind(this);
   }
+
   draw(){
     this.x-=2;
     var img = this.which ? this.image1:this.image2;
     ctx.drawImage(img,this.x,this.y,this.width,this.height);
     if(frames%20===0) this.toggleWhich();
   
-  this.toggleWhich = function(){
-    this.which = !this.which;
   }
-}
 }
 
 class Skater {
@@ -104,6 +115,7 @@ class Skater {
     this.width = 100;
     this.height = 100;
     this.isJumping = false;
+    this.isJumpingLonger = false;
     this.jumpTimer = 0;
     this.image = new Image();
     this.image.src = images.skater1;
@@ -123,7 +135,8 @@ class Skater {
   jump(){
         this.y -= 60;
         if(this.isJumping) return;
-        this.isJumping = true;           
+        this.isJumping = true;    
+               
             this.image = new Image();
             this.image.src = images.skater2;
             this.image.onload = function(){
@@ -139,25 +152,25 @@ class Skater {
         }.bind(this);
   }.bind(this), 500);
   }
-//   jumpLonger(){
-//     this.y -= 60;
-//     if(this.isJumping) return;
-//     this.isJumping = true;           
-//         this.image = new Image();
-//         this.image.src = images.skater2;
-//         this.image.onload = function(){
-//           this.draw();
-//         }.bind(this);
+  jumpLonger(){
+    this.y -= 60;
+    if(this.isJumpingLonger) return;
+    this.isJumpingLonger = true;           
+        this.image = new Image();
+        this.image.src = images.skater2;
+        this.image.onload = function(){
+          this.draw();
+        }.bind(this);
 
-//   setTimeout(function(){
-//     this.isJumping = false;
-//     this.y += 60;
-//       this.image.src = images.skater1;
-//       this.image.onload = function(){
-//         this.draw();
-//     }.bind(this);
-// }.bind(this), 3000);
-// }
+  setTimeout(function(){
+    this.isJumpingLonger = false;
+    this.y += 60;
+      this.image.src = images.skater1;
+      this.image.onload = function(){
+        this.draw();
+    }.bind(this);
+  }.bind(this), 3000);
+}
   moveRight(){
     this.x += 20;
   }
@@ -188,6 +201,9 @@ function update(){
   generateDogs();
   drawDogs();
   backg.drawScore();
+  playerName();
+  
+  
   
 }
 function scoreMult (){
@@ -208,11 +224,21 @@ function start(){
   // console.log(player);
 
 }
-function pauseButton(){
-  console.log("Me puchaste");
-  clearInterval(interval);
-  
+
+function togglePause(){
+  console.log("pausa")
+  if (!pause) {
+    pause = true;
+    clearInterval(interval)
+    document.getElementById("btn-2-pause").innerText="Play"
+  }else{
+    console.log("interval")
+    pause = false;
+    interval = setInterval(update, 400/60);
+    document.getElementById("btn-2-pause").innerText="Pause"
+  } 
 }
+
 function startUser(){
   console.log("pucheng");
 }
@@ -226,23 +252,36 @@ function restart(){
     start();
 }
 
-function playerLog(){
-  if (player1 = "") return players;
+// function playerLog(){
+//   if (player1 = "") return players;
 
+// }
+
+function playerName(){
+  var player1 = document.getElementsByTagName("input").value;
+  
+  document.getElementById("player1").innerText = player1;
+  
 }
+
 //aux functions
 addEventListener('keydown', function(e){
   if (e.keyCode === 38) {
     skater.jump();
+    this.removeEventListener;
   } else if (e.keyCode === 27) {
     restart();
   }else if (e.keyCode === 39) {
     skater.moveRight();
+    
   }else if (e.keyCode === 37) {
     skater.moveLeft();
   }
 })
-
+addEventListener("keydown", function(e){
+  if (e.keyCode === 38 && e.keyCode === 39)
+    skater.jumpLonger();
+})
 // addEventListener("keydown", function(e){
 //   if (e.keyCode === 39 && e.keyCode === 38){
 //     skater.jumpLonger();
@@ -252,13 +291,14 @@ addEventListener('keydown', function(e){
 
 document.getElementById("btn-1").addEventListener("click", function(e){
     start();
-    var player = document.getElementsByTagName("input").value;
-    console.log(player);
+    playerName();
+    // var player = document.getElementsByTagName("input").value;
+    // console.log(player);
 })
 
-document.getElementById("btn-2").addEventListener("click", function(e){
-    pauseButton();
-})
+document.getElementById("btn-2-pause").addEventListener("click",function(){
+  togglePause()
+});
 document.getElementsByTagName("input")
 
 function generateDogs(){
