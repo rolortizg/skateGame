@@ -14,6 +14,11 @@ var images = {
   doggy2:"./images/Doggy2.png",
 }
 var dogs = [];
+var players = [];
+var player1 = "";
+var player2 = "";
+var points = 0;
+var multiplicador = false;
 
 //class
 class Board {
@@ -31,8 +36,14 @@ class Board {
   }
   gameOver(){
     ctx.font = "100px Arial";
+    ctx.fillStyle = "red";
     ctx.fillText("GAME OVER",20,100);
-    ctx.fillStyle("lightblue");
+    ctx.font = "20px Arial";
+    ctx.fillText("Press ESC to restart",20,180);
+    
+    ctx.strokeText("TOTAL POINTS: " + points,20,250)
+    console.log(points);
+    
 
   }
   draw(){
@@ -40,6 +51,23 @@ class Board {
     if(this.x === -this.width) this.x = 0;
     ctx.drawImage(this.image, this.x,this.y,this.width,this.height);
     ctx.drawImage(this.image, this.x + this.width,this.y,this.width,this.height);
+  }
+  drawScore(){
+    ctx.font = "50px Arial";
+    ctx.fillStyle = "green";
+    if (skater.x <= 250) {
+    //points += Math.floor(frames/20);
+    multiplicador = false;
+    ctx.fillText("POINTS: " + points, canvas.width - 400, 170);
+    
+    
+  } else if (skater.x > 250){
+    //points += Math.floor(frames/10);
+    multiplicador = true;
+    ctx.fillText("POINTS x2: " + points, canvas.width - 400, 170);
+    
+  }
+  
   }
 }
 
@@ -111,11 +139,30 @@ class Skater {
         }.bind(this);
   }.bind(this), 500);
   }
+//   jumpLonger(){
+//     this.y -= 60;
+//     if(this.isJumping) return;
+//     this.isJumping = true;           
+//         this.image = new Image();
+//         this.image.src = images.skater2;
+//         this.image.onload = function(){
+//           this.draw();
+//         }.bind(this);
+
+//   setTimeout(function(){
+//     this.isJumping = false;
+//     this.y += 60;
+//       this.image.src = images.skater1;
+//       this.image.onload = function(){
+//         this.draw();
+//     }.bind(this);
+// }.bind(this), 3000);
+// }
   moveRight(){
-    this.x += 10;
+    this.x += 20;
   }
   moveLeft(){
-    this.x-=10;
+    this.x-=20;
   }
 
   draw(){
@@ -133,19 +180,31 @@ var dog = new Doggy();
 
 function update(){
   frames++;
+  scoreMult();
   ctx.clearRect(0,0,canvas.width,canvas.height);
   backg.draw();
   skater.draw();
   dog.draw();
   generateDogs();
   drawDogs();
+  backg.drawScore();
   
+}
+function scoreMult (){
+  if (frames % 80 === 0) {
+    if(multiplicador) points += 2
+    else points += 1;
+  }
 }
 
 function start(){
   console.log("puchado");
   if(interval) return;
   interval = setInterval(update, 400/60);
+  var playa = document.getElementById("player").value;
+  players.push(playa);
+  console.log(players);
+  
   // console.log(player);
 
 }
@@ -161,9 +220,14 @@ function restart(){
   if(interval) return;
     dogs = [];
     frames = 0;
+    points = 0;
     skater.x = 50;
     skater.y = 350;
     start();
+}
+
+function playerLog(){
+  if (player1 = "") return players;
 
 }
 //aux functions
@@ -176,27 +240,26 @@ addEventListener('keydown', function(e){
     skater.moveRight();
   }else if (e.keyCode === 37) {
     skater.moveLeft();
-  }else if (e.keyCode === 39 && keyCode === 38){
-    skater.jumpLonger();
   }
 })
 
-
-
 // addEventListener("keydown", function(e){
-//   if(e.keyCode === 39) {
-//     skater.moveRight();
+//   if (e.keyCode === 39 && e.keyCode === 38){
+//     skater.jumpLonger();
 //   }
 // })
 
+
 document.getElementById("btn-1").addEventListener("click", function(e){
     start();
-    // var player = document.getElementsByTagName("input").innerText("");
+    var player = document.getElementsByTagName("input").value;
+    console.log(player);
 })
 
 document.getElementById("btn-2").addEventListener("click", function(e){
     pauseButton();
 })
+document.getElementsByTagName("input")
 
 function generateDogs(){
   if(!(frames%500===0) ) return;

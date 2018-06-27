@@ -26,6 +26,33 @@ h1 {
   margin-left:470px;
   margin-top:50px;
 }
-#btn-2 {
+input {
+  border: 2px solid black;
   
+}
+.scores {
+  width:200px;
+  height:300px;
+  background-color:white;
+  position:absolute;
+  right:50px;
+  top:0;
+  
+}
+.relative {
+  position:relative;
+}
+#btn-1 {
+  border: 2px solid black;
+  color:black;
+}
+#btn-2 {
+  border: 2px solid black;
+  color:black;
+}
+.scores h3 {
+  border-bottom:2px solid black;
+  margin-top:20px;
+  padding-left:10px;
+  padding-bottom:20px;
 }
