@@ -12,14 +12,21 @@ var images = {
   skater3:"./images/Sprite3.png",
   doggy1:"./images/doggy3.png",
   doggy2:"./images/Doggy2.png",
+  hobo:"./images/hobo.png",
 }
+
 var dogs = [];
 var players = [];
-var player1 = "";
+// var player1 = "";
 var player2 = "";
 var points = 0;
 var multiplicador = false;
 var pause = false;
+var player1 = document.getElementById("player").value;
+
+var sound = new Audio();
+sound.src = "./sounds/Snoop Dogg -  Smoke Weed Everyday Instrumental ( Dj Esdras Martins )-[AudioTrimmer.com].mp3";
+sound.loop = true;
 
 
 
@@ -44,10 +51,12 @@ class Board {
     ctx.fillStyle = "red";
     ctx.fillText("GAME OVER",20,100);
     ctx.font = "20px Arial";
-    ctx.fillText("Press ESC to restart",20,180);
+    ctx.fillText("Press ESC to restart",20,160);
     
     ctx.fillStyle = "black";
     ctx.fillText("TOTAL POINTS: " + points,20,250)
+    ctx.font = "15px Arial";
+    ctx.fillText("if player 2's turn... input name before pressing ESC!",20, 190);
     console.log(points);
     
 
@@ -105,6 +114,23 @@ class Doggy {
     ctx.drawImage(img,this.x,this.y,this.width,this.height);
     if(frames%20===0) this.toggleWhich();
   
+  }
+}
+
+class Hobo {
+  constructor(){
+    this.x = canvas.width;
+    this.y = 390;
+    this.width = 120;
+    this.height = 70;
+    this.image1 = new Image();
+    this.image1.src = images.hobo;
+    this.image.onload = function(){
+       this.draw();
+     }.bind(this);
+  }
+  draw(){
+    ctx.drawImage(img,this.x,this.y,this.width,this.height);
   }
 }
 
@@ -194,6 +220,7 @@ var dog = new Doggy();
 function update(){
   frames++;
   scoreMult();
+  //playerName();
   ctx.clearRect(0,0,canvas.width,canvas.height);
   backg.draw();
   skater.draw();
@@ -201,7 +228,7 @@ function update(){
   generateDogs();
   drawDogs();
   backg.drawScore();
-  playerName();
+  
   
   
   
@@ -217,9 +244,10 @@ function start(){
   console.log("puchado");
   if(interval) return;
   interval = setInterval(update, 400/60);
-  var playa = document.getElementById("player").value;
-  players.push(playa);
-  console.log(players);
+  sound.play();
+  // var playa = document.getElementById("player").value;
+  // players.push(playa);
+
   
   // console.log(player);
 
@@ -231,17 +259,22 @@ function togglePause(){
     pause = true;
     clearInterval(interval)
     document.getElementById("btn-2-pause").innerText="Play"
+    sound.pause();
   }else{
     console.log("interval")
     pause = false;
     interval = setInterval(update, 400/60);
     document.getElementById("btn-2-pause").innerText="Pause"
+    sound.play();
   } 
 }
 
-function startUser(){
-  console.log("pucheng");
-}
+// function startUser(){
+//   console.log("pucheng");
+
+//   if(interval) return;
+//   interval = setInterval(update, 400/60);
+// }
 function restart(){
   if(interval) return;
     dogs = [];
@@ -250,6 +283,7 @@ function restart(){
     skater.x = 50;
     skater.y = 350;
     start();
+    playerName1();
 }
 
 // function playerLog(){
@@ -258,17 +292,23 @@ function restart(){
 // }
 
 function playerName(){
-  var player1 = document.getElementsByTagName("input").value;
+  var player1 = document.getElementById("player").value;
   
-  document.getElementById("player1").innerText = player1;
+  document.getElementById("player1").innerHTML = "Currently playing: " + player1;
+
+  console.log(player1);
+}
+function playerName1(){
+  var player2 = document.getElementById("player").value;
   
+  document.getElementById("player2").innerHTML = "Currently playing: " + player2;
 }
 
 //aux functions
 addEventListener('keydown', function(e){
   if (e.keyCode === 38) {
     skater.jump();
-    this.removeEventListener;
+    
   } else if (e.keyCode === 27) {
     restart();
   }else if (e.keyCode === 39) {
@@ -289,7 +329,7 @@ addEventListener("keydown", function(e){
 // })
 
 
-document.getElementById("btn-1").addEventListener("click", function(e){
+document.getElementById("btn-1").addEventListener("click", function(){
     start();
     playerName();
     // var player = document.getElementsByTagName("input").value;
@@ -299,7 +339,7 @@ document.getElementById("btn-1").addEventListener("click", function(e){
 document.getElementById("btn-2-pause").addEventListener("click",function(){
   togglePause()
 });
-document.getElementsByTagName("input")
+
 
 function generateDogs(){
   if(!(frames%500===0) ) return;
@@ -322,6 +362,7 @@ function dead(){
   clearInterval(interval);
   interval = undefined;
   backg.gameOver();
+  sound.pause();
 }
 
 //listeners
