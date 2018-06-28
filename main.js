@@ -247,6 +247,8 @@ function update(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   backg.draw();
   palm.draw();
+  generatePalms();
+  drawPalms();
   skater.draw();
   dog.draw();
   hobo.draw();
@@ -254,8 +256,7 @@ function update(){
   drawDogs();
   generateHobos();
   drawHobos();
-  generatePalms();
-  drawPalms();
+  
   backg.drawScore();
   
   
