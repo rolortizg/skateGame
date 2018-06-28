@@ -75,7 +75,7 @@ class Board {
   }
   drawScore(){
     ctx.font = "50px Arial";
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "yellow";
     if (skater.x <= 250) {
     //points += Math.floor(frames/20);
     multiplicador = false;
