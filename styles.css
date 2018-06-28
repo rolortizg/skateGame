@@ -67,6 +67,9 @@ input {
 #player1 {
   color:red;
 }
+#player2 {
+  color:blue;
+}
 #beatScore ol {
  display:flex;
  flex-direction: column;

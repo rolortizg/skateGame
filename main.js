@@ -16,6 +16,7 @@ var images = {
 }
 
 var dogs = [];
+var hobos = [];
 var players = [];
 // var player1 = "";
 var player2 = "";
@@ -93,7 +94,7 @@ class Board {
 class Doggy {
   constructor(){
     this.x = canvas.width;
-    this.y = 390;
+    this.y = 400;
     this.width = 70;
     this.height = 60;
     this.image1 = new Image();
@@ -120,26 +121,27 @@ class Doggy {
 class Hobo {
   constructor(){
     this.x = canvas.width;
-    this.y = 390;
-    this.width = 120;
-    this.height = 70;
-    this.image1 = new Image();
-    this.image1.src = images.hobo;
+    this.y = 400;
+    this.width = 80;
+    this.height = 60;
+    this.image = new Image();
+    this.image.src = images.hobo;
     this.image.onload = function(){
        this.draw();
      }.bind(this);
   }
   draw(){
-    ctx.drawImage(img,this.x,this.y,this.width,this.height);
+    this.x-=1;
+    ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
   }
 }
 
 class Skater {
   constructor(){
     this.x = 50;
-    this.y = 350;
-    this.width = 100;
-    this.height = 100;
+    this.y = 340;
+    this.width = 110;
+    this.height = 110;
     this.isJumping = false;
     this.isJumpingLonger = false;
     this.jumpTimer = 0;
@@ -214,6 +216,7 @@ class Skater {
 var backg = new Board();
 var skater = new Skater();
 var dog = new Doggy();
+var hobo = new Hobo();
 
 //main functions
 
@@ -225,8 +228,11 @@ function update(){
   backg.draw();
   skater.draw();
   dog.draw();
+  hobo.draw();
   generateDogs();
   drawDogs();
+  generateHobos();
+  drawHobos();
   backg.drawScore();
   
   
@@ -342,7 +348,7 @@ document.getElementById("btn-2-pause").addEventListener("click",function(){
 
 
 function generateDogs(){
-  if(!(frames%500===0) ) return;
+  if(!(frames%750===0) ) return;
   console.log("dog generated")
   var dawg = new Doggy();
   dogs.push(dawg);
@@ -352,6 +358,22 @@ function drawDogs(){
   dogs.forEach(function(dogz){
     dogz.draw();
     if(skater.isTouching(dogz)){
+      dead();
+  }
+    
+});  
+}
+function generateHobos(){
+  if(!(frames%1000===0) ) return;
+  console.log("hobo generated")
+  var houbo = new Hobo();
+  dogs.push(houbo);
+}
+
+function drawHobos(){
+  hobos.forEach(function(hoboz){
+    hoboz.draw();
+    if(skater.isTouching(hoboz)){
       dead();
   }
     
