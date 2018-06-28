@@ -13,10 +13,12 @@ var images = {
   doggy1:"./images/doggy3.png",
   doggy2:"./images/Doggy2.png",
   hobo:"./images/hobo.png",
+  palmTree:"https://i.pinimg.com/originals/74/b4/b6/74b4b6e3299c72aa67967f4d2fd7936c.png",
 }
 
 var dogs = [];
 var hobos = [];
+var palms = [];
 var players = [];
 // var player1 = "";
 var player2 = "";
@@ -135,6 +137,23 @@ class Hobo {
     ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
   }
 }
+class Palm  {
+  constructor(){
+    this.x = canvas.width;
+    this.y = 100;
+    this.width = 120;
+    this.height = 300;
+    this.image = new Image();
+    this.image.src = images.palmTree;
+    this.image.onload = function(){
+       this.draw();
+     }.bind(this);
+  }
+  draw(){
+    this.x-=1;
+    ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
+  }
+}
 
 class Skater {
   constructor(){
@@ -217,6 +236,7 @@ var backg = new Board();
 var skater = new Skater();
 var dog = new Doggy();
 var hobo = new Hobo();
+var palm = new Palm();
 
 //main functions
 
@@ -226,6 +246,7 @@ function update(){
   //playerName();
   ctx.clearRect(0,0,canvas.width,canvas.height);
   backg.draw();
+  palm.draw();
   skater.draw();
   dog.draw();
   hobo.draw();
@@ -233,6 +254,8 @@ function update(){
   drawDogs();
   generateHobos();
   drawHobos();
+  generatePalms();
+  drawPalms();
   backg.drawScore();
   
   
@@ -318,6 +341,7 @@ function updateScore1(){
     r1.innerHTML = totalScore;
     r1.setAttribute('class', 'ranking1')
 
+
 }
 // function appendScore(){
 
@@ -398,6 +422,18 @@ function drawHobos(){
   }
     
 });  
+}
+function generatePalms(){
+  if(!(frames%300===0) ) return;
+  console.log("palm generated")
+  var palm = new Palm();
+  palms.push(palm);
+}
+
+function drawPalms(){
+  palms.forEach(function(palmz){
+    palmz.draw();
+  })   
 }
 
 function dead(){
