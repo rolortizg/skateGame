@@ -290,6 +290,8 @@ function restart(){
     skater.y = 350;
     start();
     playerName1();
+    appendScore();
+    // updateScore1();
 }
 
 // function playerLog(){
@@ -300,16 +302,34 @@ function restart(){
 function playerName(){
   var player1 = document.getElementById("player").value;
   
-  document.getElementById("player1").innerHTML = "Currently playing: " + player1;
+  document.getElementById("player1").innerHTML =  player1;
 
   console.log(player1);
 }
 function playerName1(){
   var player2 = document.getElementById("player").value;
   
-  document.getElementById("player2").innerHTML = "Currently playing: " + player2;
+  document.getElementById("player2").innerHTML = player2;
 }
 
+function updateScore1(){
+    var totalScore = points;
+    var r1 = document.getElementById("ranking1")
+    r1.innerHTML = totalScore;
+    r1.setAttribute('class', 'ranking1')
+
+}
+// function appendScore(){
+
+  
+//   var r2 =  document.getElementById("ranking2")
+//     r2.appendChild(totalScore);
+// }
+// function updateScore2(){
+//     var totalScore = points;
+//     var r2 = document.getElementById("ranking2");
+//     r2.innerHTML = totalScore;
+// }
 //aux functions
 addEventListener('keydown', function(e){
   if (e.keyCode === 38) {
@@ -385,6 +405,7 @@ function dead(){
   interval = undefined;
   backg.gameOver();
   sound.pause();
+  updateScore1();
 }
 
 //listeners

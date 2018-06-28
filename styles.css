@@ -70,6 +70,10 @@ input {
 #player2 {
   color:blue;
 }
+#ranking1 {
+  color:red;
+}
+
 #beatScore ol {
  display:flex;
  flex-direction: column;
