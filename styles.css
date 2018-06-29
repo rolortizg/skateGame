@@ -46,7 +46,7 @@ input {
 .scores {
   border:3px solid black;
   width:200px;
-  height:330px;
+  height:340px;
   background-color:papayawhip;
   position:absolute;
   right:50px;
@@ -85,10 +85,10 @@ input {
   text-align:center;
   margin-top:80px;
   margin-left:50px;
-  background-color:rgb(150, 48, 90);
+  background-color:red;
   color:white;
   border: 1px solid black;
-  width:90px;
+  width:100px;
   
 }
 #player2 {
@@ -98,20 +98,30 @@ input {
   margin-left:50px;
   color:white;
   border: 1px solid black;
-  width:90px;
+  width:100px;
   
 }
 #ranking1 {
-  color:white;
-  width:40px;
-  background-color:rgb(150, 48, 90);
+  font-size:1.2em;
+  color:red;
+  
 
 }
 #ranking2 {
-  color:white;
-  width:40px;
-  background-color:navy;
+  color:navy;
+  font-size:1.2em;
 }
+#ranking3 {
+  font-size:1.2em;
+  color:red;
+
+}
+#ranking4 {
+  color:navy;
+  font-size:1.2em;
+  margin-bottom:10px;
+}
+
 
 #beatScore ol {
  display:flex;
