@@ -24,7 +24,7 @@ h1 {
 }
  
 
-img {
+.img {
   width:40%;
   margin-bottom:-130px;
   margin-top:-100px;
@@ -64,25 +64,56 @@ input {
   border: 2px solid black;
   color:black;
 }
-.scores h3 {
-  border-bottom:2px solid black;
+.scores img {
+  width:180px;
+  /* height:80px; */
+  position:absolute;
+  right:5px;
+  
+  
+  
+  /* border-bottom:2px solid black;
   margin-top:20px;
   padding-left:10px;
   padding-bottom:20px;
-  font-size:1.5em;
+  font-size:1.5em; */
+}
+.playas {
+ 
 }
 #player1 {
-  color:red;
+  text-align:center;
+  margin-top:80px;
+  margin-left:50px;
+  background-color:rgb(150, 48, 90);
+  color:white;
+  border: 1px solid black;
+  width:90px;
+  
 }
 #player2 {
-  color:blue;
+  background-color:navy;
+  text-align:center;
+  margin-top:10px;
+  margin-left:50px;
+  color:white;
+  border: 1px solid black;
+  width:90px;
+  
 }
 #ranking1 {
-  color:red;
+  
 }
 
 #beatScore ol {
  display:flex;
  flex-direction: column;
  justify-content: space-between;
+}
+strong {
+  margin-left:10px;
+  
+}
+li {
+  margin-top:5px;
 }

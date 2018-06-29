@@ -28,6 +28,7 @@ var points = 0;
 var multiplicador = false;
 var pause = false;
 var player1 = document.getElementById("player").value;
+var count = 0;
 
 var sound = new Audio();
 sound.src = "./sounds/Snoop Dogg -  Smoke Weed Everyday Instrumental ( Dj Esdras Martins )-[AudioTrimmer.com].mp3";
@@ -373,6 +374,9 @@ function updateScore1(){
 
 
 }
+// function updateScore2(){
+//     var rankingTwo = document.getElementById
+// }
 // function appendScore(){
 
   
@@ -396,6 +400,7 @@ addEventListener('keydown', function(e){
     
   } else if (e.keyCode === 27) {
     restart();
+    count++;
   }else if (e.keyCode === 39) {
     skater.moveRight();
     
