@@ -102,7 +102,15 @@ input {
   
 }
 #ranking1 {
-  
+  color:white;
+  width:40px;
+  background-color:rgb(150, 48, 90);
+
+}
+#ranking2 {
+  color:white;
+  width:40px;
+  background-color:navy;
 }
 
 #beatScore ol {

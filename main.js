@@ -16,6 +16,7 @@ var images = {
   hobo:"./images/hobo.png",
   gameOver:"https://media.moddb.com/images/games/1/45/44877/Game_Over.1.png",
   palmTree:"https://i.pinimg.com/originals/74/b4/b6/74b4b6e3299c72aa67967f4d2fd7936c.png",
+  infoScreen:"./images/Tie-dye.png",
 }
 
 var dogs = [];
@@ -23,8 +24,9 @@ var hobos = [];
 var palms = [];
 var players = [];
 // var player1 = "";
-var player2 = "";
+
 var points = 0;
+var points2 = 0;
 var multiplicador = false;
 var pause = false;
 var player1 = document.getElementById("player").value;
@@ -69,20 +71,25 @@ class Board {
       this.draw()
     }.bind(this);
     
+    this.image3 = new Image();
+    this.image3.src = images.infoScreen;
+    this.image3.onload = function(){
+      this.draw()
+    }.bind(this);
 
   }
   gameOver(){
     
     ctx.drawImage(this.image2, 0,100,this.width,this.height);
     ctx.font = "100px Mexcellent-Regular";
-    ctx.fillStyle = "fuchsia";
+    ctx.fillStyle = "yellow";
     
     // ctx.fillText("GAME OVER",20,100);
     ctx.font = "20px Avenir";
-    ctx.fillText("Press ESC to restart",20,60);
+    ctx.fillText("Press ESC to restart",470,490);
     
-    ctx.fillStyle = "black";
-    ctx.fillText("TOTAL POINTS: " + points,470,490)
+    ctx.fillStyle = "white";
+    // ctx.fillText("TOTAL POINTS: " + points,470,490)
     ctx.font = "15px Avenir";
     ctx.fillText("if player 2's turn... input name before pressing ESC!",20, 480);
     console.log(points);
@@ -90,7 +97,9 @@ class Board {
 
   }
   
-  
+  drawInfo(){
+    ctx.drawImage(this.image3, 120,100,450,300);
+  }
   draw(){
     this.x--;
     if(this.x === -this.width) this.x = 0;
@@ -116,6 +125,7 @@ class Board {
   }
   
   }
+  
   
 }
 
@@ -227,7 +237,7 @@ class Skater {
           this.image.onload = function(){
             this.draw();
         }.bind(this);
-  }.bind(this), 600);
+  }.bind(this), 550);
   }
 //   jumpLonger(){
 //     this.y -= 60;
@@ -276,6 +286,7 @@ function update(){
   //playerName();
   ctx.clearRect(0,0,canvas.width,canvas.height);
   backg.draw();
+  
   palm.draw();
   generatePalms();
   drawPalms();
@@ -288,6 +299,7 @@ function update(){
   drawHobos();
   
   backg.drawScore();
+  // backg.drawInfo();
   
   
   
@@ -298,6 +310,7 @@ function scoreMult (){
     if(multiplicador) points += 2
     else points += 1;
   }
+
 }
 
 function start(){
@@ -305,6 +318,8 @@ function start(){
   if(interval) return;
   interval = setInterval(update, 400/60);
   sound.play();
+ 
+  
   // var playa = document.getElementById("player").value;
   // players.push(playa);
 
@@ -344,7 +359,9 @@ function restart(){
     skater.y = 350;
     start();
     playerName1();
-    appendScore();
+    updateScore2();
+    updateScore3();
+    
     // updateScore1();
 }
 
@@ -370,13 +387,28 @@ function updateScore1(){
     var totalScore = points;
     var r1 = document.getElementById("ranking1")
     r1.innerHTML = totalScore;
-    r1.setAttribute('class', 'ranking1')
+    
+    
 
 
 }
-// function updateScore2(){
-//     var rankingTwo = document.getElementById
-// }
+function updateScore2(){
+    var list = document.getElementsByClassName("ol");
+    var second = document.getElementById("ranking2");
+    var totalScore2 = points;
+    second.innerHTML = totalScore2;
+
+    console.log(list.indexOf(second));
+}
+function updateScore3(){
+  var list = document.getElementsByClassName("ol");
+  var third = document.getElementById("ranking3");
+  var totalScore3 = points2;
+  third.innerHTML = totalScore3;
+
+  console.log(list.indexOf(third));
+}
+
 // function appendScore(){
 
   
@@ -389,6 +421,11 @@ function updateScore1(){
 //     r2.innerHTML = totalScore;
 // }
 //aux functions
+window.onload = function (){
+  backg.drawInfo();
+}
+
+
 addEventListener('keydown', function(e){
   if (e.keyCode === 38) {
     // skater.jump();
@@ -400,7 +437,9 @@ addEventListener('keydown', function(e){
     
   } else if (e.keyCode === 27) {
     restart();
-    count++;
+    
+   
+    
   }else if (e.keyCode === 39) {
     skater.moveRight();
     
@@ -434,7 +473,7 @@ document.getElementById("btn-2-pause").addEventListener("click",function(){
 
 
 function generateDogs(){
-  if(!(frames%600===0) ) return;
+  if(!(frames%511===0) ) return;
   console.log("dog generated")
   var dawg = new Doggy();
   dogs.push(dawg);
@@ -450,7 +489,7 @@ function drawDogs(){
 });  
 }
 function generateHobos(){
-  if(!(frames%900===0) ) return;
+  if(!(frames%832===0) ) return;
   console.log("hobo generated")
   var houbo = new Hobo();
   dogs.push(houbo);
@@ -486,8 +525,14 @@ function dead(){
   backg.gameOver();
   sound.pause();
   hoboSound.play();
-  updateScore1();
+  count++;
+  if (count === 1) return updateScore1();
+  if (count === 2) return updateScore2();
+  if (count === 3) return updateScore3();
+  points2 += points;
+  
 }
+
 
 //listeners
 
