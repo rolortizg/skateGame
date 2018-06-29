@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -13,6 +14,7 @@ var images = {
   doggy1:"./images/doggy3.png",
   doggy2:"./images/Doggy2.png",
   hobo:"./images/hobo.png",
+  gameOver:"https://media.moddb.com/images/games/1/45/44877/Game_Over.1.png",
   palmTree:"https://i.pinimg.com/originals/74/b4/b6/74b4b6e3299c72aa67967f4d2fd7936c.png",
 }
 
@@ -31,6 +33,18 @@ var sound = new Audio();
 sound.src = "./sounds/Snoop Dogg -  Smoke Weed Everyday Instrumental ( Dj Esdras Martins )-[AudioTrimmer.com].mp3";
 sound.loop = true;
 
+var ollieSound = new Audio();
+ollieSound.src="./sounds/Skateboard Ollie Sound Effect-[AudioTrimmer.com] (1).mp3";
+
+
+var hoboSound = new Audio();
+hoboSound.src="./sounds/Pain-SoundBible.com-1883168362.mp3";
+
+// var dogSound = new Audio();
+// sound.src="";
+
+// var pauseSound = new Audio();
+// sound.src ="";
 
 
 
@@ -48,18 +62,28 @@ class Board {
       this.draw()
     }.bind(this);
 
+    this.image2 = new Image();
+    this.image2.src = images.gameOver;
+    this.image2.onload = function(){
+      this.draw()
+    }.bind(this);
+    
+
   }
   gameOver(){
-    ctx.font = "100px Arial";
-    ctx.fillStyle = "red";
-    ctx.fillText("GAME OVER",20,100);
-    ctx.font = "20px Arial";
-    ctx.fillText("Press ESC to restart",20,160);
+    
+    ctx.drawImage(this.image2, 0,100,this.width,this.height);
+    ctx.font = "100px Mexcellent-Regular";
+    ctx.fillStyle = "fuchsia";
+    
+    // ctx.fillText("GAME OVER",20,100);
+    ctx.font = "20px Avenir";
+    ctx.fillText("Press ESC to restart",20,60);
     
     ctx.fillStyle = "black";
-    ctx.fillText("TOTAL POINTS: " + points,20,250)
-    ctx.font = "15px Arial";
-    ctx.fillText("if player 2's turn... input name before pressing ESC!",20, 190);
+    ctx.fillText("TOTAL POINTS: " + points,470,490)
+    ctx.font = "15px Avenir";
+    ctx.fillText("if player 2's turn... input name before pressing ESC!",20, 480);
     console.log(points);
     
 
@@ -74,18 +98,19 @@ class Board {
     
   }
   drawScore(){
-    ctx.font = "50px Arial";
-    ctx.fillStyle = "yellow";
+    ctx.font = "50px Avenir";
+    
+    ctx.fillStyle = "rgb(229, 50, 159)";
     if (skater.x <= 250) {
     //points += Math.floor(frames/20);
     multiplicador = false;
-    ctx.fillText("POINTS: " + points, canvas.width - 400, 170);
+    ctx.fillText("POINTS: " + points, canvas.width - 400, 80);
     
     
   } else if (skater.x > 250){
     //points += Math.floor(frames/10);
     multiplicador = true;
-    ctx.fillText("POINTS x2: " + points, canvas.width - 400, 170);
+    ctx.fillText("POINTS x2: " + points, canvas.width - 400, 80);
     
   }
   
@@ -164,11 +189,13 @@ class Skater {
     this.isJumping = false;
     this.isJumpingLonger = false;
     this.jumpTimer = 0;
+    
     this.image = new Image();
     this.image.src = images.skater1;
     this.image.onload = function(){
       this.draw();
     }.bind(this);
+    this.gravity = 1.5;
   }
 
   isTouching(item){
@@ -182,8 +209,9 @@ class Skater {
   jump(){
         this.y -= 60;
         if(this.isJumping) return;
-        this.isJumping = true;    
-               
+        this.isJumping = true;  
+       
+            
             this.image = new Image();
             this.image.src = images.skater2;
             this.image.onload = function(){
@@ -193,31 +221,32 @@ class Skater {
       setTimeout(function(){
         this.isJumping = false;
         this.y += 60;
+        
           this.image.src = images.skater1;
           this.image.onload = function(){
             this.draw();
         }.bind(this);
-  }.bind(this), 500);
+  }.bind(this), 600);
   }
-  jumpLonger(){
-    this.y -= 60;
-    if(this.isJumpingLonger) return;
-    this.isJumpingLonger = true;           
-        this.image = new Image();
-        this.image.src = images.skater2;
-        this.image.onload = function(){
-          this.draw();
-        }.bind(this);
+//   jumpLonger(){
+//     this.y -= 60;
+//     if(this.isJumpingLonger) return;
+//     this.isJumpingLonger = true;           
+//         this.image = new Image();
+//         this.image.src = images.skater2;
+//         this.image.onload = function(){
+//           this.draw();
+//         }.bind(this);
 
-  setTimeout(function(){
-    this.isJumpingLonger = false;
-    this.y += 60;
-      this.image.src = images.skater1;
-      this.image.onload = function(){
-        this.draw();
-    }.bind(this);
-  }.bind(this), 3000);
-}
+//   setTimeout(function(){
+//     this.isJumpingLonger = false;
+//     this.y += 60;
+//       this.image.src = images.skater1;
+//       this.image.onload = function(){
+//         this.draw();
+//     }.bind(this);
+//   }.bind(this), 3000);
+// }
   moveRight(){
     this.x += 20;
   }
@@ -358,7 +387,12 @@ function updateScore1(){
 //aux functions
 addEventListener('keydown', function(e){
   if (e.keyCode === 38) {
-    skater.jump();
+    // skater.jump();
+    
+    if(skater.isJumping) return;
+    else skater.jump();
+    ollieSound.play();  
+    
     
   } else if (e.keyCode === 27) {
     restart();
@@ -369,10 +403,10 @@ addEventListener('keydown', function(e){
     skater.moveLeft();
   }
 })
-addEventListener("keydown", function(e){
-  if (e.keyCode === 38 && e.keyCode === 39)
-    skater.jumpLonger();
-})
+// addEventListener("keydown", function(e){
+//   if (e.keyCode === 38 && e.keyCode === 39)
+//     skater.jumpLonger();
+// })
 // addEventListener("keydown", function(e){
 //   if (e.keyCode === 39 && e.keyCode === 38){
 //     skater.jumpLonger();
@@ -392,8 +426,10 @@ document.getElementById("btn-2-pause").addEventListener("click",function(){
 });
 
 
+
+
 function generateDogs(){
-  if(!(frames%750===0) ) return;
+  if(!(frames%600===0) ) return;
   console.log("dog generated")
   var dawg = new Doggy();
   dogs.push(dawg);
@@ -409,7 +445,7 @@ function drawDogs(){
 });  
 }
 function generateHobos(){
-  if(!(frames%1000===0) ) return;
+  if(!(frames%900===0) ) return;
   console.log("hobo generated")
   var houbo = new Hobo();
   dogs.push(houbo);
@@ -419,7 +455,9 @@ function drawHobos(){
   hobos.forEach(function(hoboz){
     hoboz.draw();
     if(skater.isTouching(hoboz)){
+      
       dead();
+      
   }
     
 });  
@@ -442,6 +480,7 @@ function dead(){
   interval = undefined;
   backg.gameOver();
   sound.pause();
+  hoboSound.play();
   updateScore1();
 }
 
